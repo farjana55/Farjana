@@ -7,15 +7,16 @@ const baseApiUrl = async () => {
 
 module.exports = {
         config: {
-                name: "llama",
+                name: "laguna",
+                aliases: ["lagu"],
                 version: "1.7",
                 author: "MahMUD",
                 countDown: 5,
                 role: 0,
                 description: {
-                        bn: "Llama AI এর সাথে বুদ্ধিদীপ্ত আলাপ করুন",
-                        en: "Have an intelligent conversation with Llama AI",
-                        vi: "Có một cuộc trò chuyện thông minh với Llama AI"
+                        bn: "Laguna AI দিয়ে আপনার সমস্যার সমাধান খুঁজুন",
+                        en: "Find solutions with Laguna AI assistant",
+                        vi: "Tìm giải pháp với trợ lý Laguna AI"
                 },
                 category: "ai",
                 guide: {
@@ -49,7 +50,7 @@ module.exports = {
                 const prompt = args.join(" ");
                 if (!prompt) return message.reply(getLang("noInput"));
 
-                return module.exports.handleLlama({ api, event, prompt, getLang, commandName });
+                return module.exports.handleLaguna({ api, event, prompt, getLang, commandName });
         },
 
         onReply: async function ({ api, event, Reply, getLang, commandName }) {
@@ -57,10 +58,10 @@ module.exports = {
                 const prompt = event.body;
                 if (!prompt) return;
 
-                return module.exports.handleLlama({ api, event, prompt, getLang, commandName });
+                return module.exports.handleLaguna({ api, event, prompt, getLang, commandName });
         },
 
-        handleLlama: async function ({ api, event, prompt, getLang, commandName }) {
+        handleLaguna: async function ({ api, event, prompt, getLang, commandName }) {
                 try {
                         api.setMessageReaction("⏳", event.messageID, () => {}, true);
                         
@@ -68,7 +69,7 @@ module.exports = {
                         const response = await axios.get(`${baseUrl}/api/ai`, {
                                 params: {
                                         prompt: prompt,
-                                        ai: "llama"
+                                        ai: "laguna"
                                 }
                         });
 
@@ -85,7 +86,7 @@ module.exports = {
                         }, event.messageID);
 
                 } catch (err) {
-                        console.error("Llama Error:", err);
+                        console.error("Laguna Error:", err);
                         api.setMessageReaction("❌", event.messageID, () => {}, true);
                         const errorMsg = err.response?.data?.error || err.message;
                         return api.sendMessage(getLang("error", errorMsg), event.threadID, event.messageID);
